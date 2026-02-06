@@ -20,7 +20,7 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect('home')
 
-    telegram_bot_username = getattr(settings, 'TELEGRAM_BOT_USERNAME', None)
+    telegram_bot_username = settings.TELEGRAM_BOT_USERNAME
 
     context = {
         'telegram_bot_username': telegram_bot_username,
