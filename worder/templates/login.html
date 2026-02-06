@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход через Telegram - WordsHelper</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <!-- Telegram icon -->
+            <div class="telegram-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.717-3.146 10.892-3.146 10.892s-.18.718-.718.718c-.359 0-.718-.18-.718-.18l-3.326-2.512-1.797-1.078-2.872-1.078s-.539-.18-.539-.539c0-.359.539-.539.539-.539l11.25-4.403s.718-.18.718.18-.18.359-.18.359z"/>
+                </svg>
+            </div>
+
+            <h1>Добро пожаловать в WordsHelper</h1>
+            <p>Для доступа к сайту необходимо авторизоваться через Telegram</p>
+        </div>
+
+        <!-- Error message container -->
+        <div id="error-message" class="error-message"></div>
+
+        <!-- Loading indicator -->
+        <div id="loading" class="loading">
+            Идет авторизация...
+        </div>
+
+        <!-- Telegram Login Widget -->
+        <div class="telegram-widget-container">
+            {% if telegram_bot_username %}
+            <script async src="https://telegram.org/js/telegram-widget.js?22"
+                    data-telegram-login="{{ telegram_bot_username }}"
+                    data-size="large"
+                    data-onauth="onTelegramAuth(user)"
+                    data-request-access="write"></script>
+            {% else %}
+            <div class="error-message active">
+                Ошибка конфигурации: Telegram Bot не настроен. Пожалуйста, свяжитесь с администратором.
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="login-footer">
+            <p>
+                При входе вы соглашаетесь с нашими условиями использования.
+                <br>
+                Не знаете, как создать Telegram аккаунт?
+                <a href="https://telegram.org/" target="_blank" rel="noopener noreferrer">Узнайте здесь</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- CSRF Token for AJAX requests -->
+    {% csrf_token %}
+
+    <!-- Include login JavaScript -->
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

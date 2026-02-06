@@ -2,3 +2,9 @@ asgiref==3.11.0
 Django==6.0.1
 sqlparse==0.5.5
 tzdata==2025.3
+
+# For Telegram authentication
+# Note: Using official Telegram Login Widget instead of drf_social_oauth2
+# The widget provides simpler integration for Telegram authentication
+python-telegram-bot==21.10
+cryptography==44.0.0

@@ -1,10 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordsHelper - Главная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-details h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .user-details p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content {
+                padding: 25px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Main</h1>
+    <div class="container">
+        <div class="header">
+            <div class="user-info">
+                <div class="user-avatar">
+                    {% if user.telegram_user.photo_url %}
+                    <img src="{{ user.telegram_user.photo_url }}" alt="{{ user.first_name }}">
+                    {% else %}
+                    {{ user.first_name|first }}
+                    {% endif %}
+                </div>
+                <div class="user-details">
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                    <p>
+                        {% if user.telegram_user.username %}
+                        @{{ user.telegram_user.username }}
+                        {% else %}
+                        Telegram ID: {{ user.telegram_user.telegram_id }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="logout-btn">Выйти</a>
+        </div>
+
+        <div class="content">
+            <h1>Добро пожаловать в WordsHelper!</h1>
+            <p>
+                Вы успешно авторизовались через Telegram. Теперь вы можете пользоваться всеми функциями сайта.
+            </p>
+            <p>
+                <strong>Ваша информация:</strong>
+            </p>
+            <ul>
+                <li>Имя: {{ user.first_name }} {{ user.last_name }}</li>
+                {% if user.telegram_user.username %}
+                <li>Username: @{{ user.telegram_user.username }}</li>
+                {% endif %}
+                <li>Telegram ID: {{ user.telegram_user.telegram_id }}</li>
+                <li>Дата авторизации: {{ user.telegram_user.auth_date|date:"d.m.Y H:i" }}</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
